@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Francium</title>
+<meta name="description" content="Francium: documentary-style films on technology, history, and the decisions behind them.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='640 420 660 1080'%3E%3Cmask id='c' maskUnits='userSpaceOnUse' x='640' y='420' width='660' height='1080'%3E%3Crect x='640' y='420' width='660' height='1080' fill='white'/%3E%3Cg fill='none' stroke='black' stroke-width='22' stroke-linecap='round'%3E%3Cpath d='M925 582C870 630 850 720 862 800'/%3E%3Cpath d='M1027 585C1010 650 1030 740 1085 790C1140 840 1190 870 1225 878'/%3E%3Cpath d='M858 990C890 1040 905 1090 905 1240'/%3E%3Cpath d='M1085 790C1020 870 960 930 950 1010C940 1070 960 1120 1002 1195'/%3E%3C/g%3E%3C/mask%3E%3Cg mask='url(%23c)' fill='%23161616'%3E%3Ccircle cx='970' cy='890' r='290'/%3E%3Cpath d='M1100 440L1275 440L1275 607L1100 445C1010 495 955 580 925 700C905 780 880 800 858 800L858 1475L955 1340C990 1280 995 1240 985 1190C960 1140 930 1080 950 1000C965 940 1010 880 1085 790C1040 740 1010 660 1015 600C1020 520 1050 480 1100 440Z'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0f10;
+    --ink: #e9e7e2;
+    --muted: #8d8f92;
+    --line: #26282b;
+    --accent: #b9c4cc;
+    --serif: "Instrument Serif", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+    --sans: "IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+    color-scheme: dark;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #eceeef;
+      --ink: #161718;
+      --muted: #5f6367;
+      --line: #cfd3d6;
+      --accent: #3d4850;
+      color-scheme: light;
+    }
+  }
+  :root[data-theme="light"] {
+    --bg: #eceeef;
+    --ink: #161718;
+    --muted: #5f6367;
+    --line: #cfd3d6;
+    --accent: #3d4850;
+    color-scheme: light;
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e0f10;
+    --ink: #e9e7e2;
+    --muted: #8d8f92;
+    --line: #26282b;
+    --accent: #b9c4cc;
+    color-scheme: dark;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 1px solid var(--accent); outline-offset: 4px; }
+
+  /* Hero */
+  .hero {
+    min-height: 100vh;
+    min-height: 100svh;
+    display: grid;
+    place-items: center;
+    padding: 6rem 1.5rem 4rem;
+    position: relative;
+  }
+  .mark {
+    width: clamp(150px, 26vw, 260px);
+    height: auto;
+    color: var(--ink);
+    display: block;
+    margin: 0 auto;
+    animation: mark-in 1.6s cubic-bezier(.2,.7,.1,1) both;
+  }
+  @keyframes mark-in {
+    from { opacity: 0; transform: scale(.96); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  /* The gaps in the mark are carved in as the page loads. */
+  .carve {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    animation: carve 1.9s cubic-bezier(.4,0,.2,1) .35s forwards;
+  }
+  .carve.c2 { animation-delay: .55s; }
+  .carve.c3 { animation-delay: .75s; }
+  .carve.c4 { animation-delay: .95s; }
+  @keyframes carve { to { stroke-dashoffset: 0; } }
+
+  .wordmark {
+    position: absolute;
+    left: 50%;
+    bottom: 12vh;
+    transform: translateX(-50%);
+    font-family: var(--serif);
+    font-size: clamp(2.2rem, 6vw, 3.6rem);
+    letter-spacing: .02em;
+    margin: 0;
+    font-weight: 400;
+    white-space: nowrap;
+    opacity: 0;
+    animation: fade-up 1.2s ease 1.4s forwards;
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translate(-50%, 8px); }
+    to   { opacity: 1; transform: translate(-50%, 0); }
+  }
+
+  /* Content */
+  main {
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 0 1.5rem 6rem;
+  }
+  .intro {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 3.6vw, 2.2rem);
+    line-height: 1.3;
+    margin: 0 0 4rem;
+    max-width: 30ch;
+  }
+  .films {
+    border-top: 1px solid var(--line);
+  }
+  .film {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: .5rem 2rem;
+    align-items: baseline;
+    padding: 2rem 0;
+    border-bottom: 1px solid var(--line);
+    text-decoration: none;
+  }
+  .film h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    margin: 0;
+    line-height: 1.2;
+  }
+  .film p {
+    margin: .4rem 0 0;
+    color: var(--muted);
+    max-width: 44ch;
+  }
+  .status {
+    font-size: .875rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  a.film:hover h2 { color: var(--accent); }
+  a.film { transition: color .3s ease; }
+
+  .about {
+    margin-top: 5rem;
+    color: var(--muted);
+    max-width: 44ch;
+  }
+
+  footer {
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 2rem 1.5rem calc(2rem + env(safe-area-inset-bottom, 0px));
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: .9rem;
+    color: var(--muted);
+  }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--ink); }
+
+  /* Scroll reveal, used only for the film list */
+  .reveal {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity .9s ease, transform .9s ease;
+  }
+  .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 560px) {
+    .film { grid-template-columns: 1fr; }
+    .status { white-space: normal; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: .01ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: .01ms !important;
+    }
+    .reveal { opacity: 1; transform: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<section class="hero" aria-label="Francium">
+  <svg class="mark" viewBox="640 420 660 1080" role="img" aria-label="Francium logo" fill="currentColor">
+    <defs>
+      <mask id="cut" maskUnits="userSpaceOnUse" x="640" y="420" width="660" height="1080">
+        <rect x="640" y="420" width="660" height="1080" fill="white"/>
+        <g fill="none" stroke="black" stroke-width="22" stroke-linecap="round">
+          <path class="carve" pathLength="1" d="M925 582C870 630 850 720 862 800"/>
+          <path class="carve c2" pathLength="1" d="M1027 585C1010 650 1030 740 1085 790C1140 840 1190 870 1225 878"/>
+          <path class="carve c3" pathLength="1" d="M858 990C890 1040 905 1090 905 1240"/>
+          <path class="carve c4" pathLength="1" d="M1085 790C1020 870 960 930 950 1010C940 1070 960 1120 1002 1195"/>
+        </g>
+      </mask>
+    </defs>
+    <g mask="url(#cut)">
+      <circle cx="970" cy="890" r="290"/>
+      <path d="M1100 440L1275 440L1275 607L1100 445C1010 495 955 580 925 700C905 780 880 800 858 800L858 1475L955 1340C990 1280 995 1240 985 1190C960 1140 930 1080 950 1000C965 940 1010 880 1085 790C1040 740 1010 660 1015 600C1020 520 1050 480 1100 440Z"/>
+    </g>
+  </svg>
+  <p class="wordmark"> </p>
+</section>
+
+<main>
+  <p class="intro">Documentary-style films on technology, history, and the decisions behind them.</p>
+
+  <div class="films">
+    <a class="film reveal" href="#">
+      <div>
+        <h2>Why Google Glass Failed</h2>
+        <p>The device, the backlash, and the question it left unanswered.</p>
+      </div>
+      <span class="status">In production</span>
+    </a>
+    <div class="film reveal" aria-disabled="true">
+      <div>
+        <h2>Next film</h2>
+        <p>Announced when it is ready.</p>
+      </div>
+      <span class="status">In development</span>
+    </div>
+  </div>
+
+  <p class="about reveal">Francium is an independent channel. Each film is researched, scripted, and built in 3D, from the first source to the final frame.</p>
+</main>
+
+<footer>
+  <span>&copy; Francium</span>
+  <a href="https://www.youtube.com/@WatchFrancium" rel="noopener">YouTube: @WatchFrancium</a>
+</footer>
+
+<script>
+  (function () {
+    var items = document.querySelectorAll('.reveal');
+    if (!('IntersectionObserver' in window)) {
+      items.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+    items.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+</body>
+</html>
